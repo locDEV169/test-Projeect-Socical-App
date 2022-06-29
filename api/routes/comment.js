@@ -1,18 +1,15 @@
 const router = require("express").Router();
-const { Card } = require("../models/model");
-var bodyParser = require("body-parser");
-var fs = require("fs");
+const { Comment } = require("../models/model");
 
 router.post("/add", async (req, res) => {
-  const newCard = new Card(req.body);
-  console.log(newCard);
-  await newCard
+  const newComment = new Comment(req.body);
+  console.log(newComment);
+  await newComment
     .save()
     .then((data) => {
-      // res.status(201)
       res.send({
         message: "Card created successfully!!",
-        newCard: data,
+        newComment: data,
       });
     })
     .catch((err) => {
@@ -22,13 +19,12 @@ router.post("/add", async (req, res) => {
     });
 });
 
-//Get all card
 router.get("/", async (req, res) => {
   try {
-    const getAllCard = await Card.find();
+    const getAllComment = await Comment.find();
     return res.status(200).json({
       message: "user data gotten successfully",
-      data: getAllCard,
+      data: getAllComment,
     });
   } catch (error) {
     return res.status(500).json({
@@ -37,27 +33,34 @@ router.get("/", async (req, res) => {
   }
 });
 
-//Get detail card
 router.get("/:id", async (req, res) => {
   try {
-    const card = await Card.findById(req.params.id);
-    res.status(200).json(card);
+    const comment = await Comment.findById(req.params.id);
+    res.status(200).json(comment);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//Update card
+router.get("/card/:cardId", async (req, res) => {
+  try {
+    const comment = await Comment.findOne({ cardId: req.params.cardId });
+    res.status(200).json(comment);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.put("/:id", async (req, res) => {
   try {
-    const updatedCard = await Card.findByIdAndUpdate(
+    const updatedComment = await Comment.findByIdAndUpdate(
       req.params.id,
       {
         $set: req.body,
       },
       { new: true }
     );
-    res.status(200).json(updatedCard);
+    res.status(200).json(updatedComment);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -65,7 +68,7 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    await Card.findByIdAndDelete(req.params.id);
+    await Comment.findByIdAndDelete(req.params.id);
     res.status(200).json("The card has been deleted...");
   } catch (err) {
     res.status(500).json(err);
