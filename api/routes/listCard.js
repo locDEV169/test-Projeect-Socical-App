@@ -73,6 +73,23 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.put("/heart/:id", async (req, res) => {
+  try {
+    const hearts = await Card.findById(req.params.id);
+    console.log(hearts.heart);
+    const updatedCard = await Card.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { heart: hearts.heart + 1 },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedCard);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     await Card.findByIdAndDelete(req.params.id);
