@@ -11,6 +11,7 @@ const CardSchema = new mongoose.Schema(
     },
     description: { type: String },
     image: { type: String },
+    heart: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
