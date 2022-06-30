@@ -24,8 +24,18 @@ router.post("/add", async (req, res) => {
 
 //Get all card
 router.get("/", async (req, res) => {
+  const keyword = {};
+
+  if (req.query.name) {
+    keyword.name = req.query.name;
+  }
+
+  if (req.query.description) {
+    keyword.description = req.query.description;
+  }
   try {
-    const getAllCard = await Card.find();
+    const getAllCard = await Card.find(keyword);
+    console.log(getAllCard);
     return res.status(200).json({
       message: "user data gotten successfully",
       data: getAllCard,
