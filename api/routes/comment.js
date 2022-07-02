@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
 
 router.get("/card/:cardId", async (req, res) => {
   try {
-    const comment = await Comment.findOne({ cardId: req.params.cardId });
+    const comment = await Comment.find({ cardId: req.params.cardId });
     res.status(200).json(comment);
   } catch (err) {
     res.status(500).json(err);
