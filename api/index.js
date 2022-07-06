@@ -6,6 +6,7 @@ const port = process.env.PORT || 8080;
 const mongoose = require("mongoose");
 const cardRoute = require("./routes/listCard");
 const commentRouter = require("./routes/comment");
+const uploadRouter = require("./routes/upload");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
@@ -41,6 +42,7 @@ app.get("/", function (req, res) {
 
 app.use("/api/card", cardRoute);
 app.use("/api/comment", commentRouter);
+app.use("/api/upload", uploadRouter);
 
 app.listen(port, () => {
     console.log(`BE server running is  ${port} `);

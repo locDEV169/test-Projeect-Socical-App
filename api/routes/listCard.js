@@ -5,22 +5,39 @@ var fs = require("fs");
 
 router.post("/add", async (req, res) => {
     const newCard = new Card(req.body);
-    console.log(newCard);
-    await newCard
-        .save()
-        .then((data) => {
-            // res.status(201)
-            res.send({
-                message: "Card created successfully!!",
-                newCard: data,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating user",
-            });
+    console.log(req.body.avatar, req.body.name, req.body.description);
+    if (
+        req.body.avatar === null ||
+        req.body.avatar === "" ||
+        req.body.avatar === undefined ||
+        req.body.name === null ||
+        req.body.name === undefined ||
+        req.body.name === "" ||
+        req.body.description === null ||
+        req.body.description === undefined ||
+        req.body.description === ""
+    ) {
+        res.status(400).send({
+            message: "Check field input",
         });
+    } else {
+        await newCard
+            .save()
+            .then((data) => {
+                // res.status(201)
+                res.send({
+                    message: "Card created successfully!!",
+                    newCard: data,
+                });
+            })
+            .catch((err) => {
+                res.status(500).send({
+                    message:
+                        err.message ||
+                        "Some error occurred while creating user",
+                });
+            });
+    }
 });
 
 //Get all card
